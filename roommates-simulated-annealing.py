@@ -116,6 +116,9 @@ class Rooms:
             room_two = random.choice(self.rooms)
             swap_strategy = random.getrandbits(1)
 
+            room_one_compatibiliy_score = room_one.calculate_compatibility_score()
+            room_two_compatibiliy_score = room_two.calculate_compatibility_score()
+
             if(swap_strategy):
                 # Select 2 rooms at random, and 1 student at random from each room; exchange them
                 student_one_index = random.randrange(ROOM_CAPACITY - 1)
@@ -130,7 +133,12 @@ class Rooms:
                 swap_students(room_one.students,
                               room_two.students, 1,  ROOM_CAPACITY - 1)
 
-            swapped_compatibility_score = self.average_room_score()
+            room_one_swapped_compatibiliy_score = room_one.calculate_compatibility_score()
+            room_two__swapped_compatibiliy_score = room_two.calculate_compatibility_score()
+
+            swapped_compatibility_score = current_compatibility_score - room_one_compatibiliy_score - \
+                room_two_compatibiliy_score + room_one_swapped_compatibiliy_score + \
+                room_two__swapped_compatibiliy_score
 
             if(is_change_accepted(current_compatibility_score, swapped_compatibility_score)):
                 # Accept change
